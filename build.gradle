@@ -1,0 +1,45 @@
+plugins {
+    id "me.champeau.gradle.jmh" version "0.4.4"
+    id "io.morethan.jmhreport" version "0.4.2"
+}
+
+repositories {
+    jcenter()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    jmh 'org.apache.commons:commons-compress:1.14'
+    jmh 'org.anarres:parallelgzip:1.0.3'
+    jmh 'org.tukaani:xz:1.6'
+    jmh 'com.ning:compress-lzf:1.0.4'
+    jmh 'com.google.guava:guava:21.0'
+}
+
+jmh {
+    iterations = 3
+    // benchmarkMode = ['thrpt','ss'] // Benchmark mode. Available modes are: [Throughput/thrpt, AverageTime/avgt, SampleTime/sample, SingleShotTime/ss, All/all]
+    benchmarkMode = ['avgt']
+    fork = 1 // How many times to forks a single benchmark. Use 0 to disable forking altogether
+    failOnError = false
+    resultsFile = project.file("${project.buildDir}/reports/jmh/results.json") // results file
+    // operationsPerInvocation = 3
+    // benchmarkParameters =  [:] // Benchmark parameters.
+    // profilers = [] // Use profilers to collect additional data. Supported profilers: [cl, comp, gc, stack, perf, perfnorm, perfasm, xperf, xperfasm, hs_cl, hs_comp, hs_gc, hs_rt, hs_thr]
+    resultFormat = 'JSON' // Result format type (one of CSV, JSON, NONE, SCSV, TEXT)
+    timeUnit = 'ms'
+    warmupIterations = 2 // Number of warmup iterations to do.
+    jmhVersion = '1.19' // Specifies JMH version
+}
+
+jmhReport {
+    jmhResultPath = project.file("${project.buildDir}/reports/jmh/results.json")
+    jmhReportOutput = project.file('build/reports/jmh')
+}
+tasks.jmh.finalizedBy tasks.jmhReport
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.0.2'
+}
