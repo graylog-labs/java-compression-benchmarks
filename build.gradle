@@ -32,6 +32,7 @@ jmh {
     timeUnit = 'ms'
     warmupIterations = 2 // Number of warmup iterations to do.
     jmhVersion = '1.19' // Specifies JMH version
+    verbosity = 'SILENT'
 }
 
 jmhReport {
