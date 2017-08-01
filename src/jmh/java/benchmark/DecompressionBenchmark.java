@@ -1,5 +1,6 @@
 package benchmark;
 
+import com.github.luben.zstd.ZstdInputStream;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Resources;
 import com.ning.compress.gzip.OptimizedGZIPInputStream;
@@ -164,6 +165,19 @@ public class DecompressionBenchmark {
         try (final InputStream inputStream = resource.openStream();
              final LZ4BlockInputStream xzInputStream = new LZ4BlockInputStream(inputStream)) {
             ByteStreams.copy(xzInputStream, byteArrayOutputStream);
+        }
+
+        bh.consume(byteArrayOutputStream);
+    }
+
+    @Benchmark
+    public void decompressLargeJson_ZstdInputStream(Blackhole bh) throws IOException {
+        final URL resource = Resources.getResource("large2.json.zst");
+        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        try (final InputStream inputStream = resource.openStream();
+             final ZstdInputStream zstdInputStream = new ZstdInputStream(inputStream)) {
+            ByteStreams.copy(zstdInputStream, byteArrayOutputStream);
         }
 
         bh.consume(byteArrayOutputStream);

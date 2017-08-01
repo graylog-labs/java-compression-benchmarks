@@ -1,5 +1,6 @@
 package benchmark;
 
+import com.github.luben.zstd.ZstdOutputStream;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Resources;
 import com.ning.compress.gzip.OptimizedGZIPOutputStream;
@@ -305,6 +306,42 @@ public class CompressionBenchmark {
 
         try (final InputStream inputStream = resource.openStream();
              final LZ4BlockOutputStream outputStream = new LZ4BlockOutputStream(byteArrayOutputStream, 1 << 16, LZ4Factory.nativeInstance().highCompressor())) {
+            ByteStreams.copy(inputStream, outputStream);
+        }
+
+        compressedSize.compressedBytes = byteArrayOutputStream.size();
+    }
+
+    @Benchmark
+    public void compressLargeJson_ZstdOutputStream_Level3(CompressedSize compressedSize) throws IOException {
+        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        try (final InputStream inputStream = resource.openStream();
+             final ZstdOutputStream outputStream = new ZstdOutputStream(byteArrayOutputStream)) {
+            ByteStreams.copy(inputStream, outputStream);
+        }
+
+        compressedSize.compressedBytes = byteArrayOutputStream.size();
+    }
+
+    @Benchmark
+    public void compressLargeJson_ZstdOutputStream_Level1(CompressedSize compressedSize) throws IOException {
+        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        try (final InputStream inputStream = resource.openStream();
+             final ZstdOutputStream outputStream = new ZstdOutputStream(byteArrayOutputStream, 1)) {
+            ByteStreams.copy(inputStream, outputStream);
+        }
+
+        compressedSize.compressedBytes = byteArrayOutputStream.size();
+    }
+
+    @Benchmark
+    public void compressLargeJson_ZstdOutputStream_Level19(CompressedSize compressedSize) throws IOException {
+        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        try (final InputStream inputStream = resource.openStream();
+             final ZstdOutputStream outputStream = new ZstdOutputStream(byteArrayOutputStream, 19)) {
             ByteStreams.copy(inputStream, outputStream);
         }
 
