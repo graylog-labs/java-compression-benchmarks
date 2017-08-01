@@ -5,6 +5,8 @@ import com.google.common.io.Resources;
 import com.ning.compress.gzip.OptimizedGZIPOutputStream;
 import com.ning.compress.lzf.LZFOutputStream;
 import com.ning.compress.lzf.parallel.PLZFOutputStream;
+import net.jpountz.lz4.LZ4BlockOutputStream;
+import net.jpountz.lz4.LZ4Factory;
 import org.anarres.parallelgzip.ParallelGZIPOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipParameters;
@@ -232,6 +234,78 @@ public class CompressionBenchmark {
         try (final InputStream inputStream = resource.openStream();
              final XZCompressorOutputStream gzipOutputStream = new XZCompressorOutputStream(byteArrayOutputStream, LZMA2Options.PRESET_MAX)) {
             ByteStreams.copy(inputStream, gzipOutputStream);
+        }
+
+        compressedSize.compressedBytes = byteArrayOutputStream.size();
+    }
+
+    @Benchmark
+    public void compressLargeJson_LZ4BlockOutputStream_JavaSafe_Fast(CompressedSize compressedSize) throws IOException {
+        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        try (final InputStream inputStream = resource.openStream();
+             final LZ4BlockOutputStream outputStream = new LZ4BlockOutputStream(byteArrayOutputStream, 1 << 16, LZ4Factory.safeInstance().fastCompressor())) {
+            ByteStreams.copy(inputStream, outputStream);
+        }
+
+        compressedSize.compressedBytes = byteArrayOutputStream.size();
+    }
+
+    @Benchmark
+    public void compressLargeJson_LZ4BlockOutputStream_JavaSafe_High(CompressedSize compressedSize) throws IOException {
+        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        try (final InputStream inputStream = resource.openStream();
+             final LZ4BlockOutputStream outputStream = new LZ4BlockOutputStream(byteArrayOutputStream, 1 << 16, LZ4Factory.safeInstance().highCompressor())) {
+            ByteStreams.copy(inputStream, outputStream);
+        }
+
+        compressedSize.compressedBytes = byteArrayOutputStream.size();
+    }
+
+    @Benchmark
+    public void compressLargeJson_LZ4BlockOutputStream_JavaUnsafe_Fast(CompressedSize compressedSize) throws IOException {
+        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        try (final InputStream inputStream = resource.openStream();
+             final LZ4BlockOutputStream outputStream = new LZ4BlockOutputStream(byteArrayOutputStream, 1 << 16, LZ4Factory.unsafeInstance().fastCompressor())) {
+            ByteStreams.copy(inputStream, outputStream);
+        }
+
+        compressedSize.compressedBytes = byteArrayOutputStream.size();
+    }
+
+    @Benchmark
+    public void compressLargeJson_LZ4BlockOutputStream_JavaUnsafe_High(CompressedSize compressedSize) throws IOException {
+        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        try (final InputStream inputStream = resource.openStream();
+             final LZ4BlockOutputStream outputStream = new LZ4BlockOutputStream(byteArrayOutputStream, 1 << 16, LZ4Factory.unsafeInstance().highCompressor())) {
+            ByteStreams.copy(inputStream, outputStream);
+        }
+
+        compressedSize.compressedBytes = byteArrayOutputStream.size();
+    }
+
+    @Benchmark
+    public void compressLargeJson_LZ4BlockOutputStream_Native_Fast(CompressedSize compressedSize) throws IOException {
+        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        try (final InputStream inputStream = resource.openStream();
+             final LZ4BlockOutputStream outputStream = new LZ4BlockOutputStream(byteArrayOutputStream, 1 << 16, LZ4Factory.nativeInstance().fastCompressor())) {
+            ByteStreams.copy(inputStream, outputStream);
+        }
+
+        compressedSize.compressedBytes = byteArrayOutputStream.size();
+    }
+
+    @Benchmark
+    public void compressLargeJson_LZ4BlockOutputStream_Native_High(CompressedSize compressedSize) throws IOException {
+        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        try (final InputStream inputStream = resource.openStream();
+             final LZ4BlockOutputStream outputStream = new LZ4BlockOutputStream(byteArrayOutputStream, 1 << 16, LZ4Factory.nativeInstance().highCompressor())) {
+            ByteStreams.copy(inputStream, outputStream);
         }
 
         compressedSize.compressedBytes = byteArrayOutputStream.size();

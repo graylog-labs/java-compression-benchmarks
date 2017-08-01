@@ -15,6 +15,7 @@ dependencies {
     jmh 'org.anarres:parallelgzip:1.0.3'
     jmh 'org.tukaani:xz:1.6'
     jmh 'com.ning:compress-lzf:1.0.4'
+    jmh 'com.github.swri-robotics:lz4:1.5.0'
     jmh 'com.google.guava:guava:21.0'
 }
 

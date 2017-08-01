@@ -4,6 +4,8 @@ import com.google.common.io.ByteStreams;
 import com.google.common.io.Resources;
 import com.ning.compress.gzip.OptimizedGZIPInputStream;
 import com.ning.compress.lzf.LZFInputStream;
+import net.jpountz.lz4.LZ4BlockInputStream;
+import net.jpountz.lz4.LZ4Factory;
 import org.anarres.parallelgzip.ParallelGZIPInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.lzma.LZMACompressorInputStream;
@@ -148,6 +150,19 @@ public class DecompressionBenchmark {
 
         try (final InputStream inputStream = resource.openStream();
              final XZCompressorInputStream xzInputStream = new XZCompressorInputStream(inputStream)) {
+            ByteStreams.copy(xzInputStream, byteArrayOutputStream);
+        }
+
+        bh.consume(byteArrayOutputStream);
+    }
+
+    @Benchmark
+    public void decompressLargeJson_LZ4BlockInputStream(Blackhole bh) throws IOException {
+        final URL resource = Resources.getResource("large2.json.lz4");
+        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        try (final InputStream inputStream = resource.openStream();
+             final LZ4BlockInputStream xzInputStream = new LZ4BlockInputStream(inputStream)) {
             ByteStreams.copy(xzInputStream, byteArrayOutputStream);
         }
 
