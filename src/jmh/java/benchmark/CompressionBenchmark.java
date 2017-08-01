@@ -39,36 +39,36 @@ public class CompressionBenchmark {
     }
 
     @Benchmark
-    public void compressLargeJson_GZIPOutputStream_DefaultBufferSize(CompressedSize compressedSize) throws IOException {
+    public void gzip_GZIPOutputStream_DefaultBufferSize(CompressedSize compressedSize) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try (final InputStream inputStream = resource.openStream();
-             final GZIPOutputStream gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream)) {
-            ByteStreams.copy(inputStream, gzipOutputStream);
+             final GZIPOutputStream outputStream = new GZIPOutputStream(byteArrayOutputStream)) {
+            ByteStreams.copy(inputStream, outputStream);
         }
 
         compressedSize.compressedBytes = byteArrayOutputStream.size();
     }
 
     @Benchmark
-    public void compressLargeJson_GZIPOutputStream_BufferSize8192(CompressedSize compressedSize) throws IOException {
+    public void gzip_GZIPOutputStream_BufferSize8192(CompressedSize compressedSize) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try (final InputStream inputStream = resource.openStream();
-             final GZIPOutputStream gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream, 8192)) {
-            ByteStreams.copy(inputStream, gzipOutputStream);
+             final GZIPOutputStream outputStream = new GZIPOutputStream(byteArrayOutputStream, 8192)) {
+            ByteStreams.copy(inputStream, outputStream);
         }
 
         compressedSize.compressedBytes = byteArrayOutputStream.size();
     }
 
     @Benchmark
-    public void compressLargeJson_GZIPOutputStream_BufferedOutputStream(CompressedSize compressedSize) throws IOException {
+    public void gzip_GZIPOutputStream_BufferedOutputStream(CompressedSize compressedSize) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try (final InputStream inputStream = resource.openStream();
-             final GZIPOutputStream gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream);
-             final BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(gzipOutputStream)) {
+             final GZIPOutputStream outputStream = new GZIPOutputStream(byteArrayOutputStream);
+             final BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream)) {
             ByteStreams.copy(inputStream, bufferedOutputStream);
         }
 
@@ -76,172 +76,172 @@ public class CompressionBenchmark {
     }
 
     @Benchmark
-    public void compressLargeJson_ParallelGZIPOutputStream(CompressedSize compressedSize) throws IOException {
+    public void gzip_ParallelGZIPOutputStream(CompressedSize compressedSize) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try (final InputStream inputStream = resource.openStream();
-             final ParallelGZIPOutputStream gzipOutputStream = new ParallelGZIPOutputStream(byteArrayOutputStream)) {
-            ByteStreams.copy(inputStream, gzipOutputStream);
+             final ParallelGZIPOutputStream outputStream = new ParallelGZIPOutputStream(byteArrayOutputStream)) {
+            ByteStreams.copy(inputStream, outputStream);
         }
 
         compressedSize.compressedBytes = byteArrayOutputStream.size();
     }
 
     @Benchmark
-    public void compressLargeJson_OptimizedGZIPOutputStream(CompressedSize compressedSize) throws IOException {
+    public void gzip_OptimizedGZIPOutputStream(CompressedSize compressedSize) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try (final InputStream inputStream = resource.openStream();
-             final OptimizedGZIPOutputStream gzipOutputStream = new OptimizedGZIPOutputStream(byteArrayOutputStream)) {
-            ByteStreams.copy(inputStream, gzipOutputStream);
+             final OptimizedGZIPOutputStream outputStream = new OptimizedGZIPOutputStream(byteArrayOutputStream)) {
+            ByteStreams.copy(inputStream, outputStream);
         }
 
         compressedSize.compressedBytes = byteArrayOutputStream.size();
     }
 
     @Benchmark
-    public void compressLargeJson_LZFOutputStream(CompressedSize compressedSize) throws IOException {
+    public void lzf_LZFOutputStream(CompressedSize compressedSize) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try (final InputStream inputStream = resource.openStream();
-             final LZFOutputStream gzipOutputStream = new LZFOutputStream(byteArrayOutputStream)) {
-            ByteStreams.copy(inputStream, gzipOutputStream);
+             final LZFOutputStream outputStream = new LZFOutputStream(byteArrayOutputStream)) {
+            ByteStreams.copy(inputStream, outputStream);
         }
 
         compressedSize.compressedBytes = byteArrayOutputStream.size();
     }
 
     @Benchmark
-    public void compressLargeJson_PLZFOutputStream(CompressedSize compressedSize) throws IOException {
+    public void lzf_PLZFOutputStream(CompressedSize compressedSize) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try (final InputStream inputStream = resource.openStream();
-             final PLZFOutputStream gzipOutputStream = new PLZFOutputStream(byteArrayOutputStream)) {
-            ByteStreams.copy(inputStream, gzipOutputStream);
+             final PLZFOutputStream outputStream = new PLZFOutputStream(byteArrayOutputStream)) {
+            ByteStreams.copy(inputStream, outputStream);
         }
 
         compressedSize.compressedBytes = byteArrayOutputStream.size();
     }
 
     @Benchmark
-    public void compressLargeJson_GzipCompressorOutputStream_DefaultCompressionLevel(CompressedSize compressedSize) throws IOException {
+    public void gzip_GzipCompressorOutputStream_DefaultCompressionLevel(CompressedSize compressedSize) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try (final InputStream inputStream = resource.openStream();
-             final GzipCompressorOutputStream gzipOutputStream = new GzipCompressorOutputStream(byteArrayOutputStream)) {
-            ByteStreams.copy(inputStream, gzipOutputStream);
+             final GzipCompressorOutputStream outputStream = new GzipCompressorOutputStream(byteArrayOutputStream)) {
+            ByteStreams.copy(inputStream, outputStream);
         }
 
         compressedSize.compressedBytes = byteArrayOutputStream.size();
     }
 
     @Benchmark
-    public void compressLargeJson_GzipCompressorOutputStream_NoCompression(CompressedSize compressedSize) throws IOException {
+    public void gzip_GzipCompressorOutputStream_NoCompression(CompressedSize compressedSize) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         final GzipParameters gzipParameters = new GzipParameters();
         gzipParameters.setCompressionLevel(Deflater.NO_COMPRESSION);
 
         try (final InputStream inputStream = resource.openStream();
-             final GzipCompressorOutputStream gzipOutputStream = new GzipCompressorOutputStream(byteArrayOutputStream, gzipParameters)) {
-            ByteStreams.copy(inputStream, gzipOutputStream);
+             final GzipCompressorOutputStream outputStream = new GzipCompressorOutputStream(byteArrayOutputStream, gzipParameters)) {
+            ByteStreams.copy(inputStream, outputStream);
         }
 
         compressedSize.compressedBytes = byteArrayOutputStream.size();
     }
 
     @Benchmark
-    public void compressLargeJson_GzipCompressorOutputStream_FastestCompression(CompressedSize compressedSize) throws IOException {
+    public void gzip_GzipCompressorOutputStream_FastestCompression(CompressedSize compressedSize) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         final GzipParameters gzipParameters = new GzipParameters();
         gzipParameters.setCompressionLevel(Deflater.BEST_SPEED);
 
         try (final InputStream inputStream = resource.openStream();
-             final GzipCompressorOutputStream gzipOutputStream = new GzipCompressorOutputStream(byteArrayOutputStream, gzipParameters)) {
-            ByteStreams.copy(inputStream, gzipOutputStream);
+             final GzipCompressorOutputStream outputStream = new GzipCompressorOutputStream(byteArrayOutputStream, gzipParameters)) {
+            ByteStreams.copy(inputStream, outputStream);
         }
 
         compressedSize.compressedBytes = byteArrayOutputStream.size();
     }
 
     @Benchmark
-    public void compressLargeJson_GzipCompressorOutputStream_BestCompression(CompressedSize compressedSize) throws IOException {
+    public void gzip_GzipCompressorOutputStream_BestCompression(CompressedSize compressedSize) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         final GzipParameters gzipParameters = new GzipParameters();
         gzipParameters.setCompressionLevel(Deflater.BEST_COMPRESSION);
 
         try (final InputStream inputStream = resource.openStream();
-             final GzipCompressorOutputStream gzipOutputStream = new GzipCompressorOutputStream(byteArrayOutputStream, gzipParameters)) {
-            ByteStreams.copy(inputStream, gzipOutputStream);
+             final GzipCompressorOutputStream outputStream = new GzipCompressorOutputStream(byteArrayOutputStream, gzipParameters)) {
+            ByteStreams.copy(inputStream, outputStream);
         }
 
         compressedSize.compressedBytes = byteArrayOutputStream.size();
     }
 
     @Benchmark
-    public void compressLargeJson_LZMACompressorOutputStream(CompressedSize compressedSize) throws IOException {
+    public void lzma_LZMACompressorOutputStream(CompressedSize compressedSize) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try (final InputStream inputStream = resource.openStream();
-             final LZMACompressorOutputStream gzipOutputStream = new LZMACompressorOutputStream(byteArrayOutputStream)) {
-            ByteStreams.copy(inputStream, gzipOutputStream);
+             final LZMACompressorOutputStream outputStream = new LZMACompressorOutputStream(byteArrayOutputStream)) {
+            ByteStreams.copy(inputStream, outputStream);
         }
 
         compressedSize.compressedBytes = byteArrayOutputStream.size();
     }
 
     @Benchmark
-    public void compressLargeJson_FramedSnappyCompressorOutputStream(CompressedSize compressedSize) throws IOException {
+    public void snappy_FramedSnappyCompressorOutputStream(CompressedSize compressedSize) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try (final InputStream inputStream = resource.openStream();
-             final FramedSnappyCompressorOutputStream gzipOutputStream = new FramedSnappyCompressorOutputStream(byteArrayOutputStream)) {
-            ByteStreams.copy(inputStream, gzipOutputStream);
+             final FramedSnappyCompressorOutputStream outputStream = new FramedSnappyCompressorOutputStream(byteArrayOutputStream)) {
+            ByteStreams.copy(inputStream, outputStream);
         }
 
         compressedSize.compressedBytes = byteArrayOutputStream.size();
     }
 
     @Benchmark
-    public void compressLargeJson_XZCompressorOutputStream_PresetDefault(CompressedSize compressedSize) throws IOException {
+    public void xz_XZCompressorOutputStream_PresetDefault(CompressedSize compressedSize) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try (final InputStream inputStream = resource.openStream();
-             final XZCompressorOutputStream gzipOutputStream = new XZCompressorOutputStream(byteArrayOutputStream, LZMA2Options.PRESET_DEFAULT)) {
-            ByteStreams.copy(inputStream, gzipOutputStream);
+             final XZCompressorOutputStream outputStream = new XZCompressorOutputStream(byteArrayOutputStream, LZMA2Options.PRESET_DEFAULT)) {
+            ByteStreams.copy(inputStream, outputStream);
         }
 
         compressedSize.compressedBytes = byteArrayOutputStream.size();
     }
 
     @Benchmark
-    public void compressLargeJson_XZCompressorOutputStream_PresetMin(CompressedSize compressedSize) throws IOException {
+    public void xz_XZCompressorOutputStream_PresetMin(CompressedSize compressedSize) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try (final InputStream inputStream = resource.openStream();
-             final XZCompressorOutputStream gzipOutputStream = new XZCompressorOutputStream(byteArrayOutputStream, LZMA2Options.PRESET_MIN)) {
-            ByteStreams.copy(inputStream, gzipOutputStream);
+             final XZCompressorOutputStream outputStream = new XZCompressorOutputStream(byteArrayOutputStream, LZMA2Options.PRESET_MIN)) {
+            ByteStreams.copy(inputStream, outputStream);
         }
 
         compressedSize.compressedBytes = byteArrayOutputStream.size();
     }
 
     @Benchmark
-    public void compressLargeJson_XZCompressorOutputStream_PresetMax(CompressedSize compressedSize) throws IOException {
+    public void xz_XZCompressorOutputStream_PresetMax(CompressedSize compressedSize) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try (final InputStream inputStream = resource.openStream();
-             final XZCompressorOutputStream gzipOutputStream = new XZCompressorOutputStream(byteArrayOutputStream, LZMA2Options.PRESET_MAX)) {
-            ByteStreams.copy(inputStream, gzipOutputStream);
+             final XZCompressorOutputStream outputStream = new XZCompressorOutputStream(byteArrayOutputStream, LZMA2Options.PRESET_MAX)) {
+            ByteStreams.copy(inputStream, outputStream);
         }
 
         compressedSize.compressedBytes = byteArrayOutputStream.size();
     }
 
     @Benchmark
-    public void compressLargeJson_LZ4BlockOutputStream_JavaSafe_Fast(CompressedSize compressedSize) throws IOException {
+    public void lz4_LZ4BlockOutputStream_JavaSafe_Fast(CompressedSize compressedSize) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try (final InputStream inputStream = resource.openStream();
@@ -253,7 +253,7 @@ public class CompressionBenchmark {
     }
 
     @Benchmark
-    public void compressLargeJson_LZ4BlockOutputStream_JavaSafe_High(CompressedSize compressedSize) throws IOException {
+    public void lz4_LZ4BlockOutputStream_JavaSafe_High(CompressedSize compressedSize) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try (final InputStream inputStream = resource.openStream();
@@ -265,7 +265,7 @@ public class CompressionBenchmark {
     }
 
     @Benchmark
-    public void compressLargeJson_LZ4BlockOutputStream_JavaUnsafe_Fast(CompressedSize compressedSize) throws IOException {
+    public void lz4_LZ4BlockOutputStream_JavaUnsafe_Fast(CompressedSize compressedSize) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try (final InputStream inputStream = resource.openStream();
@@ -277,7 +277,7 @@ public class CompressionBenchmark {
     }
 
     @Benchmark
-    public void compressLargeJson_LZ4BlockOutputStream_JavaUnsafe_High(CompressedSize compressedSize) throws IOException {
+    public void lz4_LZ4BlockOutputStream_JavaUnsafe_High(CompressedSize compressedSize) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try (final InputStream inputStream = resource.openStream();
@@ -289,7 +289,7 @@ public class CompressionBenchmark {
     }
 
     @Benchmark
-    public void compressLargeJson_LZ4BlockOutputStream_Native_Fast(CompressedSize compressedSize) throws IOException {
+    public void lz4_LZ4BlockOutputStream_Native_Fast(CompressedSize compressedSize) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try (final InputStream inputStream = resource.openStream();
@@ -301,7 +301,7 @@ public class CompressionBenchmark {
     }
 
     @Benchmark
-    public void compressLargeJson_LZ4BlockOutputStream_Native_High(CompressedSize compressedSize) throws IOException {
+    public void lz4_LZ4BlockOutputStream_Native_High(CompressedSize compressedSize) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try (final InputStream inputStream = resource.openStream();
@@ -313,7 +313,7 @@ public class CompressionBenchmark {
     }
 
     @Benchmark
-    public void compressLargeJson_ZstdOutputStream_Level3(CompressedSize compressedSize) throws IOException {
+    public void zstd_ZstdOutputStream_Level3(CompressedSize compressedSize) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try (final InputStream inputStream = resource.openStream();
@@ -325,7 +325,7 @@ public class CompressionBenchmark {
     }
 
     @Benchmark
-    public void compressLargeJson_ZstdOutputStream_Level1(CompressedSize compressedSize) throws IOException {
+    public void zstd_ZstdOutputStream_Level1(CompressedSize compressedSize) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try (final InputStream inputStream = resource.openStream();
@@ -337,7 +337,7 @@ public class CompressionBenchmark {
     }
 
     @Benchmark
-    public void compressLargeJson_ZstdOutputStream_Level19(CompressedSize compressedSize) throws IOException {
+    public void zstd_ZstdOutputStream_Level19(CompressedSize compressedSize) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try (final InputStream inputStream = resource.openStream();

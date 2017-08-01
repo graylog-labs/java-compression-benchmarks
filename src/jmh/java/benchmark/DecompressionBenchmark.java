@@ -27,7 +27,7 @@ import java.util.zip.GZIPInputStream;
 @State(Scope.Benchmark)
 public class DecompressionBenchmark {
     @Benchmark
-    public void decompressLargeJson_GZIPInputStream_DefaultBufferSize(Blackhole bh) throws IOException {
+    public void gzip_GZIPInputStream_DefaultBufferSize(Blackhole bh) throws IOException {
         final URL resource = Resources.getResource("large2.json.gz");
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -40,7 +40,7 @@ public class DecompressionBenchmark {
     }
 
     @Benchmark
-    public void decompressLargeJson_GZIPInputStream_BufferSize8192(Blackhole bh) throws IOException {
+    public void gzip_GZIPInputStream_BufferSize8192(Blackhole bh) throws IOException {
         final URL resource = Resources.getResource("large2.json.gz");
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -53,7 +53,7 @@ public class DecompressionBenchmark {
     }
 
     @Benchmark
-    public void decompressLargeJson_GZIPInputStream_BufferedInputStream(Blackhole bh) throws IOException {
+    public void gzip_GZIPInputStream_BufferedInputStream(Blackhole bh) throws IOException {
         final URL resource = Resources.getResource("large2.json.gz");
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -67,7 +67,7 @@ public class DecompressionBenchmark {
     }
 
     @Benchmark
-    public void decompressLargeJson_ParallelGZIPInputStream(Blackhole bh) throws IOException {
+    public void gzip_ParallelGZIPInputStream(Blackhole bh) throws IOException {
         final URL resource = Resources.getResource("large2.json.gz");
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -80,7 +80,7 @@ public class DecompressionBenchmark {
     }
 
     @Benchmark
-    public void decompressLargeJson_OptimizedGZIPInputStream(Blackhole bh) throws IOException {
+    public void gzip_OptimizedGZIPInputStream(Blackhole bh) throws IOException {
         final URL resource = Resources.getResource("large2.json.gz");
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -93,7 +93,7 @@ public class DecompressionBenchmark {
     }
 
     @Benchmark
-    public void decompressLargeJson_LZFInputStream(Blackhole bh) throws IOException {
+    public void lzf_LZFInputStream(Blackhole bh) throws IOException {
         final URL resource = Resources.getResource("large2.json.lzf");
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -106,7 +106,7 @@ public class DecompressionBenchmark {
     }
 
     @Benchmark
-    public void decompressLargeJson_GzipCompressorInputStream(Blackhole bh) throws IOException {
+    public void gzip_GzipCompressorInputStream(Blackhole bh) throws IOException {
         final URL resource = Resources.getResource("large2.json.gz");
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -119,7 +119,7 @@ public class DecompressionBenchmark {
     }
 
     @Benchmark
-    public void decompressLargeJson_LZMACompressorInputStream(Blackhole bh) throws IOException {
+    public void lzma_LZMACompressorInputStream(Blackhole bh) throws IOException {
         final URL resource = Resources.getResource("large2.json.lzma");
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -132,7 +132,7 @@ public class DecompressionBenchmark {
     }
 
     @Benchmark
-    public void decompressLargeJson_SnappyCompressorInputStream(Blackhole bh) throws Exception {
+    public void snappy_SnappyCompressorInputStream(Blackhole bh) throws Exception {
         final URL resource = Resources.getResource("large2.json.snappy");
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -145,7 +145,7 @@ public class DecompressionBenchmark {
     }
 
     @Benchmark
-    public void decompressLargeJson_XZCompressorInputStream(Blackhole bh) throws IOException {
+    public void xz_XZCompressorInputStream(Blackhole bh) throws IOException {
         final URL resource = Resources.getResource("large2.json.xz");
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -158,20 +158,20 @@ public class DecompressionBenchmark {
     }
 
     @Benchmark
-    public void decompressLargeJson_LZ4BlockInputStream(Blackhole bh) throws IOException {
+    public void lz4_LZ4BlockInputStream(Blackhole bh) throws IOException {
         final URL resource = Resources.getResource("large2.json.lz4");
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try (final InputStream inputStream = resource.openStream();
-             final LZ4BlockInputStream xzInputStream = new LZ4BlockInputStream(inputStream)) {
-            ByteStreams.copy(xzInputStream, byteArrayOutputStream);
+             final LZ4BlockInputStream lz4InputStream = new LZ4BlockInputStream(inputStream)) {
+            ByteStreams.copy(lz4InputStream, byteArrayOutputStream);
         }
 
         bh.consume(byteArrayOutputStream);
     }
 
     @Benchmark
-    public void decompressLargeJson_ZstdInputStream(Blackhole bh) throws IOException {
+    public void zstd_ZstdInputStream(Blackhole bh) throws IOException {
         final URL resource = Resources.getResource("large2.json.zst");
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
